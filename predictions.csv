@@ -1,0 +1,13 @@
+employee,project,hours,billing_amount,predicted_billing
+Alice,Website Redesign,12,2400,2443.73
+Alice,Website Redesign,8,1600,1493.82
+Bob,API Development,20,5000,4981.96
+Bob,Mobile App,15,3750,3692.55
+Carol,Website Redesign,10,2000,1990.67
+Carol,API Development,16,4000,4054.04
+Alice,Mobile App,6,1500,1555.35
+Bob,Website Redesign,14,2800,2918.59
+Carol,Mobile App,12,3000,3002.1
+Alice,API Development,18,4500,4507.1
+Bob,API Development,22,5500,5456.91
+Carol,Website Redesign,9,1800,1753.19
