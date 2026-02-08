@@ -1,0 +1,100 @@
+{
+  "generated_at": "2026-02-08T21:01:54.762119",
+  "currency": "₪",
+  "projects": {
+    "A": {
+      "avg_rate_per_hour": 150.0,
+      "total_hours_logged": 0.008,
+      "entry_count": 1,
+      "clients": [
+        "POLO"
+      ]
+    },
+    "אמפולות": {
+      "avg_rate_per_hour": 150.0,
+      "total_hours_logged": 0.1894,
+      "entry_count": 1,
+      "clients": [
+        "LAVIE"
+      ]
+    },
+    "אתר": {
+      "avg_rate_per_hour": 150.02,
+      "total_hours_logged": 0.2709,
+      "entry_count": 1,
+      "clients": [
+        "לימור דרמון"
+      ]
+    },
+    "בניית לוגו": {
+      "avg_rate_per_hour": 149.66,
+      "total_hours_logged": 0.3493,
+      "entry_count": 3,
+      "clients": [
+        "SAME DOOR",
+        "SAME DOOR GARAGE"
+      ]
+    },
+    "ספריי לשיער": {
+      "avg_rate_per_hour": 150.0,
+      "total_hours_logged": 1.246,
+      "entry_count": 2,
+      "clients": [
+        "POLO COSMETICS"
+      ]
+    },
+    "פיתוח": {
+      "avg_rate_per_hour": 148.28,
+      "total_hours_logged": 0.0029,
+      "entry_count": 1,
+      "clients": [
+        "KARNAF AI"
+      ]
+    },
+    "קיקו": {
+      "avg_rate_per_hour": 150.01,
+      "total_hours_logged": 0.5903,
+      "entry_count": 2,
+      "clients": [
+        "POLO COSMETICS"
+      ]
+    },
+    "רתר": {
+      "avg_rate_per_hour": 120.0,
+      "total_hours_logged": 2.2762,
+      "entry_count": 2,
+      "clients": [
+        "LA MER"
+      ]
+    },
+    "תיקון תוויות": {
+      "avg_rate_per_hour": 120.0,
+      "total_hours_logged": 0.8016,
+      "entry_count": 2,
+      "clients": [
+        "LA MER"
+      ]
+    },
+    "תיקונים אמפולות": {
+      "avg_rate_per_hour": 150.0,
+      "total_hours_logged": 0.0038,
+      "entry_count": 1,
+      "clients": [
+        "LAVIE"
+      ]
+    }
+  },
+  "project_list": [
+    "A",
+    "אמפולות",
+    "אתר",
+    "בניית לוגו",
+    "ספריי לשיער",
+    "פיתוח",
+    "קיקו",
+    "רתר",
+    "תיקון תוויות",
+    "תיקונים אמפולות"
+  ],
+  "overall_avg_rate": 133.91
+}

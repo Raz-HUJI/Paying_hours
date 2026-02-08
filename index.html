@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Karnaf - Project Cost Estimator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <h1>מחשבון עלויות פרויקט</h1>
+      <p class="subtitle">הזן פרטי פרויקט לקבלת הערכת עלות</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <section class="estimator-card">
+        <form id="estimator-form">
+          <div class="form-group">
+            <label for="project-select">סוג פרויקט</label>
+            <select id="project-select" required>
+              <option value="" disabled selected>בחר פרויקט...</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="hours-input">שעות משוערות</label>
+            <input type="number" id="hours-input" min="0.1" step="0.1" placeholder="הזן מספר שעות" required>
+          </div>
+
+          <button type="submit" class="btn-calculate">חשב עלות</button>
+        </form>
+
+        <div id="result" class="result-panel hidden">
+          <h2>הערכת עלות</h2>
+          <div class="cost-display">
+            <span id="cost-amount">0</span>
+            <span class="cost-currency">₪</span>
+          </div>
+          <p class="cost-breakdown" id="cost-breakdown"></p>
+          <p class="disclaimer">* ההערכה מבוססת על נתונים היסטוריים ועשויה להשתנות</p>
+        </div>
+
+        <div id="error-msg" class="error-message hidden"></div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Karnaf AI</p>
+    </div>
+  </footer>
+
+  <script>
+    (async function () {
+      const select = document.getElementById('project-select');
+      const form = document.getElementById('estimator-form');
+      const resultPanel = document.getElementById('result');
+      const costAmount = document.getElementById('cost-amount');
+      const costBreakdown = document.getElementById('cost-breakdown');
+      const errorMsg = document.getElementById('error-msg');
+
+      let modelData = null;
+
+      try {
+        const response = await fetch('model_data.json');
+        if (!response.ok) throw new Error('Could not load model_data.json');
+        modelData = await response.json();
+
+        modelData.project_list.forEach(function (project) {
+          const option = document.createElement('option');
+          option.value = project;
+          option.textContent = project;
+          select.appendChild(option);
+        });
+      } catch (err) {
+        errorMsg.textContent = 'לא ניתן לטעון את נתוני המודל. ודא שהקובץ model_data.json קיים ושאתה מפעיל דרך שרת (python -m http.server).';
+        errorMsg.classList.remove('hidden');
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (!modelData) return;
+
+        const project = select.value;
+        const hours = parseFloat(document.getElementById('hours-input').value);
+
+        if (!project || isNaN(hours) || hours <= 0) return;
+
+        const projectData = modelData.projects[project];
+        const rate = projectData ? projectData.avg_rate_per_hour : modelData.overall_avg_rate;
+        const cost = rate * hours;
+
+        costAmount.textContent = cost.toLocaleString('he-IL', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        costBreakdown.textContent = hours + ' שעות \u00D7 ' + rate.toFixed(2) + ' ' + modelData.currency + '/שעה';
+
+        resultPanel.classList.remove('hidden');
+      });
+    })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,225 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --color-primary: #1a365d;
+  --color-primary-light: #2b6cb0;
+  --color-accent: #d69e2e;
+  --color-accent-hover: #b7791f;
+  --color-bg: #f7fafc;
+  --color-card: #ffffff;
+  --color-text: #2d3748;
+  --color-text-muted: #718096;
+  --color-border: #e2e8f0;
+  --color-success: #38a169;
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-card-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --radius: 12px;
+  --font-stack: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+html {
+  direction: rtl;
+  font-family: var(--font-stack);
+  font-size: 16px;
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  width: 100%;
+}
+
+/* Header */
+header {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: white;
+  padding: 2.5rem 0;
+  text-align: center;
+}
+
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+header .subtitle {
+  font-size: 1rem;
+  opacity: 0.85;
+}
+
+/* Main */
+main {
+  flex: 1;
+  padding: 2rem 0;
+}
+
+/* Estimator Card */
+.estimator-card {
+  background: var(--color-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  padding: 2rem;
+  transition: box-shadow 0.3s;
+}
+
+.estimator-card:hover {
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* Form */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--color-primary);
+}
+
+.form-group select,
+.form-group input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--color-border);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: var(--font-stack);
+  direction: rtl;
+  transition: border-color 0.2s;
+  background: white;
+}
+
+.form-group select:focus,
+.form-group input:focus {
+  outline: none;
+  border-color: var(--color-primary-light);
+}
+
+/* Button */
+.btn-calculate {
+  width: 100%;
+  padding: 0.875rem;
+  background: var(--color-accent);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  font-family: var(--font-stack);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.btn-calculate:hover {
+  background: var(--color-accent-hover);
+}
+
+.btn-calculate:active {
+  transform: scale(0.98);
+}
+
+/* Result Panel */
+.result-panel {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #f0fff4, #c6f6d5);
+  border-radius: var(--radius);
+  text-align: center;
+  animation: fadeIn 0.4s ease;
+}
+
+.result-panel.hidden {
+  display: none;
+}
+
+.result-panel h2 {
+  color: var(--color-success);
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+}
+
+.cost-display {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  margin: 0.5rem 0;
+}
+
+.cost-breakdown {
+  color: var(--color-text-muted);
+  margin-top: 0.75rem;
+}
+
+.disclaimer {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin-top: 1rem;
+  font-style: italic;
+}
+
+/* Error */
+.error-message {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: #fff5f5;
+  border: 1px solid #fed7d7;
+  border-radius: 8px;
+  color: #c53030;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.error-message.hidden {
+  display: none;
+}
+
+/* Footer */
+footer {
+  background: var(--color-primary);
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  padding: 1.25rem 0;
+  font-size: 0.875rem;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  header h1 {
+    font-size: 1.4rem;
+  }
+
+  .estimator-card {
+    padding: 1.25rem;
+  }
+
+  .cost-display {
+    font-size: 2rem;
+  }
+}

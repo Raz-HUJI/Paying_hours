@@ -1,22 +1,42 @@
-# Paying Hours – Billing with Linear Regression
+# Paying Hours -- Project Billing Estimator
 
-Use a **Linear Regression** model to turn your employee paying-hours data (per project) into **client billing amounts**. The model learns from your historical data how hours and project type relate to what you bill, then predicts billing for new work.
+Train a **Linear Regression** model from employee time-tracking data (Excel) and hourly rates, then predict billing or export rate data as JSON for a client-facing cost-estimator website.
 
 ## Data format
 
-Your CSV should have these columns (names must match exactly):
+Your Excel file (`.xlsx`) should have these columns in order:
 
-| Column          | Description                    |
-|-----------------|--------------------------------|
-| `employee`      | Employee name or ID            |
-| `project`       | Project/client name            |
-| `hours`         | Hours worked (number)          |
-| `billing_amount`| **For training only**: amount billed (number). Omit for rows you want to predict. |
+| Column | Description |
+|--------|-------------|
+| `#` | Row ID (number) |
+| `Date` | Date and time of entry |
+| `Employee` | Employee name |
+| `Client` | Client company name |
+| `Project` | Project or task name |
+| `Start Time` | Work start time |
+| `End Time` | Work end time |
+| `Total Hours` | Decimal hours worked |
 
-- **Training**: Include `billing_amount` for past work so the model can learn.
-- **Prediction**: Use the same columns but leave `billing_amount` empty or omit it for new work.
+## Configuration
 
-Example: `sample_hours_data.csv` in this folder.
+### Employee rates (`rates.json`)
+
+Create a `rates.json` file with hourly rates per employee:
+
+```json
+{
+  "rates": {
+    "חן": 150,
+    "אושרת": 120
+  },
+  "currency": "₪",
+  "default_rate": 130
+}
+```
+
+- `rates` -- hourly rate per employee name
+- `currency` -- currency symbol for display
+- `default_rate` -- fallback rate for unlisted employees
 
 ## Setup
 
@@ -26,42 +46,45 @@ pip install -r requirements.txt
 
 ## Commands
 
-### 1. Prepare your data (optional)
-
-Check that your CSV has the right columns and normalized headers:
+### 1. Prepare (validate data)
 
 ```bash
-python paying_hours.py prepare your_data.csv --out prepared.csv
+python paying_hours.py prepare "SAMPLE PROJECT.xlsx" --out prepared.csv
 ```
 
 ### 2. Train the model
 
-Train on a CSV that includes `billing_amount`:
-
 ```bash
-python paying_hours.py train your_data.csv --model billing_model.joblib
+python paying_hours.py train "SAMPLE PROJECT.xlsx" --rates rates.json --model billing_model.joblib
 ```
 
-Using the sample file:
+### 3. Predict billing
 
 ```bash
-python paying_hours.py train sample_hours_data.csv --model billing_model.joblib
+python paying_hours.py predict "SAMPLE PROJECT.xlsx" --model billing_model.joblib --rates rates.json --out predictions.csv
 ```
 
-### 3. Predict billing for new work
-
-Use the saved model to predict billing for another CSV (same columns, no need for `billing_amount`):
+### 4. Export data for website
 
 ```bash
-python paying_hours.py predict new_work.csv --model billing_model.joblib --out predictions.csv
+python paying_hours.py export "SAMPLE PROJECT.xlsx" --rates rates.json --out model_data.json
 ```
 
-The output CSV will contain your original columns plus `predicted_billing`.
+## Client website
 
-## How the model works
+After running `export`, open the website:
 
-- **Features**: `employee`, `project`, and `hours` (project and employee are one-hot encoded so the model can learn different effective rates per project and per person).
-- **Target**: `billing_amount`.
-- **Model**: `sklearn` Linear Regression; the pipeline is saved with `joblib` so you can reload it without retraining.
+```bash
+python -m http.server 8000
+```
 
-You can replace `your_data.csv` with your real paying-hours table and add a `billing_amount` column (from past invoices) to train a model that fits your actual billing.
+Then visit `http://localhost:8000` in a browser. The website lets clients select a project type, enter estimated hours, and see an approximate cost.
+
+> **Note:** The website uses `fetch()` to load `model_data.json`, so it must be served over HTTP -- opening `index.html` directly via `file://` will not work.
+
+## How it works
+
+- **Billing** is computed as `employee_hourly_rate * total_hours` using rates from `rates.json`
+- **Model features**: `Employee`, `Client`, `Project` (one-hot encoded) + `Total Hours` (numeric)
+- **Model**: sklearn `LinearRegression` pipeline, saved with `joblib`
+- **Website**: Static HTML/CSS/JS that reads `model_data.json` and computes `avg_rate * hours` per project type
